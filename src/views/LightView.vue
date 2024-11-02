@@ -15,14 +15,12 @@
 export default {
   data() {
     return {
-      // Initialize three lights in the "on" state (true)
-      lights: [true, true, true]
+      lights: [true, true, true] // All lights start as "on"
     };
   },
   methods: {
     toggleLight(index) {
-      // Toggle the light's state
-      this.lights[index] = !this.lights[index];
+      this.lights[index] = !this.lights[index]; // Toggle the light state
     }
   }
 };
@@ -32,13 +30,17 @@ export default {
 .lightbulb-container {
   display: flex;
   justify-content: space-around;
+  margin-top: 20px;
 }
 
 button {
-  font-size: 2rem;
-  padding: 10px;
+  font-size: 4rem; /* Increase font size for larger lightbulbs */
+  padding: 20px; /* Increase padding for a larger clickable area */
   border: none;
+  border-radius: 50%; /* Makes the buttons circular */
   cursor: pointer;
+  width: 120px;
+  height: 120px;
 }
 
 .light-on {
