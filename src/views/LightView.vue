@@ -1,10 +1,8 @@
 <template>
   <div class="lightbulb-container">
     <button
-      v-for="(light, index) in lights"
-      :key="index"
       :class="{'light-on': light, 'light-off': !light}"
-      @click="toggleLight(index)"
+      @click="toggleLight"
     >
       {{ light ? '💡' : '💤' }}
     </button>
@@ -15,12 +13,12 @@
 export default {
   data() {
     return {
-      lights: [true, true, true] // All lights start as "on"
+      light: true // The light starts as "on"
     };
   },
   methods: {
-    toggleLight(index) {
-      this.lights[index] = !this.lights[index]; // Toggle the light state
+    toggleLight() {
+      this.light = !this.light; // Toggle the light state
     }
   }
 };
@@ -29,18 +27,18 @@ export default {
 <style>
 .lightbulb-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   margin-top: 20px;
 }
 
 button {
-  font-size: 4rem; /* Increase font size for larger lightbulbs */
-  padding: 20px; /* Increase padding for a larger clickable area */
+  font-size: 6rem; /* Increase font size for larger lightbulb */
+  padding: 30px;    /* Increase padding for a larger clickable area */
   border: none;
-  border-radius: 50%; /* Makes the buttons circular */
+  border-radius: 50%; /* Makes the button circular */
   cursor: pointer;
-  width: 120px;
-  height: 120px;
+  width: 180px;
+  height: 180px;
 }
 
 .light-on {
