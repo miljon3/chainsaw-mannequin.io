@@ -17,7 +17,7 @@
   
       <div v-if="submitted" class="results">
         <h3>Dina resultat:</h3>
-        <p>Du gissade rätt på {{ correctCount }} av {{ totalCommon }} möjliga.</p>
+        <p>Din totala poäng är {{ score }}.</p>
         <ul>
           <li
             v-for="(holiday, index) in holidays"
@@ -42,8 +42,7 @@
     data() {
       return {
         submitted: false,
-        correctCount: 0,
-        totalCommon: 0,
+        score: 0,
         holidays: [
           { name: "Nyårsdagen (1 januari)", isCommon: true, selected: false },
           { name: "Trettondedag jul (6 januari)", isCommon: false, selected: false },
@@ -62,20 +61,23 @@
       };
     },
     mounted() {
-      // Calculate total number of common holidays
+      // Beräknar det totala antalet gemensamma helgdagar
       this.totalCommon = this.holidays.filter(holiday => holiday.isCommon).length;
     },
     methods: {
       checkAnswers() {
         this.submitted = true;
-        // Calculate the number of correct answers
-        this.correctCount = this.holidays.reduce((count, holiday) => {
-          if (holiday.isCommon && holiday.selected) {
-            return count + 1;
-          } else {
-            return count;
+        this.score = 0;
+        // Beräknar poängen baserat på användarens val
+        this.holidays.forEach(holiday => {
+          if (holiday.selected) {
+            if (holiday.isCommon) {
+              this.score += 1; // +1 för rätt gissning
+            } else {
+              this.score -= 1; // -1 för felaktig gissning
+            }
           }
-        }, 0);
+        });
       }
     }
   };
