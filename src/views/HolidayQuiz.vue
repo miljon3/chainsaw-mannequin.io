@@ -1,6 +1,6 @@
 <template>
     <div class="holiday-quiz">
-      <h2>Guess Which Swedish Holidays are Also U.S. Holidays</h2>
+      <h2>Gissa vilka svenska helgdagar som också är amerikanska helgdagar</h2>
       <ul>
         <li v-for="(holiday, index) in holidays" :key="holiday.name">
           <label>
@@ -13,10 +13,11 @@
           </label>
         </li>
       </ul>
-      <button @click="checkAnswers" :disabled="submitted">Submit Answers</button>
+      <button @click="checkAnswers" :disabled="submitted">Skicka in svar</button>
   
       <div v-if="submitted" class="results">
-        <h3>Your Results:</h3>
+        <h3>Dina resultat:</h3>
+        <p>Du gissade rätt på {{ correctCount }} av {{ totalCommon }} möjliga.</p>
         <ul>
           <li
             v-for="(holiday, index) in holidays"
@@ -28,8 +29,8 @@
             }"
           >
             {{ holiday.name }} -
-            <span v-if="holiday.isCommon">Also a U.S. holiday ✅</span>
-            <span v-else>Not a U.S. holiday ❌</span>
+            <span v-if="holiday.isCommon">Också en amerikansk helgdag ✅</span>
+            <span v-else>Inte en amerikansk helgdag ❌</span>
           </li>
         </ul>
       </div>
@@ -41,26 +42,40 @@
     data() {
       return {
         submitted: false,
+        correctCount: 0,
+        totalCommon: 0,
         holidays: [
-          { name: "New Year's Day (Jan 1)", isCommon: true, selected: false },
-          { name: "Epiphany (Jan 6)", isCommon: false, selected: false },
-          { name: "Good Friday", isCommon: false, selected: false },
-          { name: "Easter Sunday", isCommon: true, selected: false },
-          { name: "Walpurgis Night (Apr 30)", isCommon: false, selected: false },
-          { name: "May Day (May 1)", isCommon: false, selected: false },
-          { name: "Ascension Day", isCommon: false, selected: false },
-          { name: "National Day of Sweden (Jun 6)", isCommon: false, selected: false },
-          { name: "Midsummer's Eve", isCommon: false, selected: false },
-          { name: "All Saints' Day", isCommon: false, selected: false },
-          { name: "Christmas Eve (Dec 24)", isCommon: false, selected: false },
-          { name: "Christmas Day (Dec 25)", isCommon: true, selected: false },
-          { name: "Boxing Day (Dec 26)", isCommon: false, selected: false }
+          { name: "Nyårsdagen (1 januari)", isCommon: true, selected: false },
+          { name: "Trettondedag jul (6 januari)", isCommon: false, selected: false },
+          { name: "Långfredagen", isCommon: false, selected: false },
+          { name: "Påskdagen", isCommon: false, selected: false },
+          { name: "Valborgsmässoafton (30 april)", isCommon: false, selected: false },
+          { name: "Första maj (1 maj)", isCommon: false, selected: false },
+          { name: "Kristi himmelsfärdsdag", isCommon: false, selected: false },
+          { name: "Sveriges nationaldag (6 juni)", isCommon: false, selected: false },
+          { name: "Midsommarafton", isCommon: false, selected: false },
+          { name: "Alla helgons dag", isCommon: false, selected: false },
+          { name: "Julafton (24 december)", isCommon: false, selected: false },
+          { name: "Juldagen (25 december)", isCommon: true, selected: false },
+          { name: "Annandag jul (26 december)", isCommon: false, selected: false }
         ]
       };
+    },
+    mounted() {
+      // Calculate total number of common holidays
+      this.totalCommon = this.holidays.filter(holiday => holiday.isCommon).length;
     },
     methods: {
       checkAnswers() {
         this.submitted = true;
+        // Calculate the number of correct answers
+        this.correctCount = this.holidays.reduce((count, holiday) => {
+          if (holiday.isCommon && holiday.selected) {
+            return count + 1;
+          } else {
+            return count;
+          }
+        }, 0);
       }
     }
   };
